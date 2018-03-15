@@ -75,7 +75,7 @@ class MSU(RandomWalker):
             UoM_to_eat = random.choice(UoM_student)
             self.energy += self.model.MSU_gain_from_food
 
-            # Kill the UoMUoM_student
+            # Kill the UoM student
             self.model.grid._remove_agent(self.pos, UoM_to_eat)
             self.model.schedule.remove(UoM_to_eat)
 
@@ -85,11 +85,11 @@ class MSU(RandomWalker):
             self.model.schedule.remove(self)
         else:
             if random.random() < self.model.MSU_reproduce:
-                # Create a new MSU cub
+                # Create a new MSU student
                 self.energy /= 2
-                cub = MSU(self.pos, self.model, self.moore, self.energy)
-                self.model.grid.place_agent(cub, cub.pos)
-                self.model.schedule.add(cub)
+                new_student = MSU(self.pos, self.model, self.moore, self.energy)
+                self.model.grid.place_agent(new_student, new_student.pos)
+                self.model.schedule.add(new_student)
 
 
 class GrassPatch(Agent):
