@@ -1,9 +1,9 @@
 '''
-Wolf-Sheep Predation Model
+MSU-UoM Predation Model
 ================================
 
 Replication of the model found in NetLogo:
-    Wilensky, U. (1997). NetLogo Wolf Sheep Predation model.
+    Wilensky, U. (1997). NetLogo MSU UoM Predation model.
     http://ccl.northwestern.edu/netlogo/models/WolfSheepPredation.
     Center for Connected Learning and Computer-Based Modeling,
     Northwestern University, Evanston, IL.
@@ -15,89 +15,89 @@ from mesa import Model
 from mesa.space import MultiGrid
 from mesa.datacollection import DataCollector
 
-from MSUvUoM.agents import Sheep, Wolf, GrassPatch
+from MSUvUoM.agents import UoM, MSU, GrassPatch
 from MSUvUoM.schedule import RandomActivationByBreed
 
 
-class WolfSheepPredation(Model):
+class MSUvUoMPredation(Model):
     '''
-    Wolf-Sheep Predation Model
+    MSUvUoM Predation Model
     '''
 
     height = 20
     width = 20
 
-    initial_sheep = 100
-    initial_wolves = 50
+    initial_UoM = 100
+    initial_MSU = 50
 
-    sheep_reproduce = 0.04
-    wolf_reproduce = 0.05
+    UoM_reproduce = 0.04
+    MSU_reproduce = 0.05
 
-    wolf_gain_from_food = 20
+    MSU_gain_from_food = 20
 
     grass = False
     grass_regrowth_time = 30
-    sheep_gain_from_food = 4
+    UoM_gain_from_food = 4
 
     verbose = False  # Print-monitoring
 
-    description = 'A model for simulating wolf and sheep (predator-prey) ecosystem modelling.'
+    description = 'A model for simulating MSU and UoM (predator-prey) ecosystem modelling.'
 
     def __init__(self, height=20, width=20,
-                 initial_sheep=100, initial_wolves=50,
-                 sheep_reproduce=0.04, wolf_reproduce=0.05,
-                 wolf_gain_from_food=20,
-                 grass=False, grass_regrowth_time=30, sheep_gain_from_food=4):
+                 initial_UoM=100, initial_MSU=50,
+                 UoM_reproduce=0.04, MSU_reproduce=0.05,
+                 MSU_gain_from_food=20,
+                 grass=False, grass_regrowth_time=30, UoM_gain_from_food=4):
         '''
-        Create a new Wolf-Sheep model with the given parameters.
+        Create a new MSU vs UoM model with the given parameters.
 
         Args:
-            initial_sheep: Number of sheep to start with
-            initial_wolves: Number of wolves to start with
-            sheep_reproduce: Probability of each sheep reproducing each step
-            wolf_reproduce: Probability of each wolf reproducing each step
-            wolf_gain_from_food: Energy a wolf gains from eating a sheep
-            grass: Whether to have the sheep eat grass for energy
+            initial_UoM: Number of UoM to start with
+            initial_MSU: Number of MSU to start with
+            UoM_reproduce: Probability of each UoM reproducing each step
+            MSU_reproduce: Probability of each MSU reproducing each step
+            MSU_gain_from_food: Energy a MSU gains from eating a UoM
+            grass: Whether to have the UoM eat grass for energy
             grass_regrowth_time: How long it takes for a grass patch to regrow
                                  once it is eaten
-            sheep_gain_from_food: Energy sheep gain from grass, if enabled.
+            UoM_gain_from_food: Energy UoM gain from grass, if enabled.
         '''
 
         # Set parameters
         self.height = height
         self.width = width
-        self.initial_sheep = initial_sheep
-        self.initial_wolves = initial_wolves
-        self.sheep_reproduce = sheep_reproduce
-        self.wolf_reproduce = wolf_reproduce
-        self.wolf_gain_from_food = wolf_gain_from_food
+        self.initial_UoM = initial_UoM
+        self.initial_MSU = initial_MSU
+        self.UoM_reproduce = UoM_reproduce
+        self.MSU_reproduce = MSU_reproduce
+        self.MSU_gain_from_food = MSU_gain_from_food
         self.grass = grass
         self.grass_regrowth_time = grass_regrowth_time
-        self.sheep_gain_from_food = sheep_gain_from_food
+        self.UoM_gain_from_food = UoM_gain_from_food
 
         self.schedule = RandomActivationByBreed(self)
         self.grid = MultiGrid(self.height, self.width, torus=True)
         self.datacollector = DataCollector(
-            {"Wolves": lambda m: m.schedule.get_breed_count(Wolf),
-             "Sheep": lambda m: m.schedule.get_breed_count(Sheep)})
+            {"MSU": lambda m: m.schedule.get_breed_count(MSU),
+             "UoM": lambda m: m.schedule.get_breed_count(UoM)})
 
-        # Create sheep:
-        for i in range(self.initial_sheep):
+        # Create UoM:
+        for i in range(self.initial_UoM):
             x = random.randrange(self.width)
             y = random.randrange(self.height)
-            energy = random.randrange(2 * self.sheep_gain_from_food)
-            sheep = Sheep((x, y), self, True, energy)
-            self.grid.place_agent(sheep, (x, y))
-            self.schedule.add(sheep)
+            energy = random.randrange(2 * self.UoM_gain_from_food)
+            UoM = UoM((x, y), self, True, energy)
+            self.grid.place_agent(UoM, (x, y))
+            self.schedule.add(UoM)
 
-        # Create wolves
-        for i in range(self.initial_wolves):
+        # Create MSU
+        for i in range(self.initial_MSU):
             x = random.randrange(self.width)
             y = random.randrange(self.height)
-            energy = random.randrange(2 * self.wolf_gain_from_food)
-            wolf = Wolf((x, y), self, True, energy)
-            self.grid.place_agent(wolf, (x, y))
-            self.schedule.add(wolf)
+            energy = random.randrange(2 * self.MSU_gain_from_food)
+            MSU = MSU((x, y), self, True, energy)
+            self.grid.place_agent(MSU, (x, y))
+            self.schedule.add(MSU)
 
         # Create grass patches
         if self.grass:
@@ -123,23 +123,23 @@ class WolfSheepPredation(Model):
         self.datacollector.collect(self)
         if self.verbose:
             print([self.schedule.time,
-                   self.schedule.get_breed_count(Wolf),
-                   self.schedule.get_breed_count(Sheep)])
+                   self.schedule.get_breed_count(MSU),
+                   self.schedule.get_breed_count(UoM)])
 
     def run_model(self, step_count=200):
 
         if self.verbose:
-            print('Initial number wolves: ',
-                  self.schedule.get_breed_count(Wolf))
-            print('Initial number sheep: ',
-                  self.schedule.get_breed_count(Sheep))
+            print('Initial number MSU: ',
+                  self.schedule.get_breed_count(MSU))
+            print('Initial number UoM: ',
+                  self.schedule.get_breed_count(UoM))
 
         for i in range(step_count):
             self.step()
 
         if self.verbose:
             print('')
-            print('Final number wolves: ',
-                  self.schedule.get_breed_count(Wolf))
-            print('Final number sheep: ',
-                  self.schedule.get_breed_count(Sheep))
+            print('Final number MSU: ',
+                  self.schedule.get_breed_count(MSU))
+            print('Final number UoM: ',
+                  self.schedule.get_breed_count(UoM))

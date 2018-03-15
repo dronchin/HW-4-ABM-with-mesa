@@ -5,7 +5,7 @@ from mesa import Agent
 from MSUvUoM.random_walk import RandomWalker
 
 
-class Sheep(RandomWalker):
+class UoM(RandomWalker):
     '''
     A sheep that walks around, reproduces (asexually) and gets eaten.
 
@@ -52,7 +52,7 @@ class Sheep(RandomWalker):
             self.model.schedule.add(lamb)
 
 
-class Wolf(RandomWalker):
+class MSU(RandomWalker):
     '''
     A wolf that walks around, reproduces (asexually) and eats sheep.
     '''
