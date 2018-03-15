@@ -1,4 +1,4 @@
-import random
+UoMimport random
 
 from mesa import Agent
 
@@ -7,7 +7,7 @@ from MSUvUoM.random_walk import RandomWalker
 
 class UoM(RandomWalker):
     '''
-    A sheep that walks around, reproduces (asexually) and gets eaten.
+    A UoM that walks around, reproduces (asexually) and gets eaten.
 
     The init is the same as the RandomWalker.
     '''
@@ -34,7 +34,7 @@ class UoM(RandomWalker):
             grass_patch = [obj for obj in this_cell
                            if isinstance(obj, GrassPatch)][0]
             if grass_patch.fully_grown:
-                self.energy += self.model.sheep_gain_from_food
+                self.energy += self.model.UoM_gain_from_food
                 grass_patch.fully_grown = False
 
             # Death
@@ -43,18 +43,18 @@ class UoM(RandomWalker):
                 self.model.schedule.remove(self)
                 living = False
 
-        if living and random.random() < self.model.sheep_reproduce:
-            # Create a new sheep:
+        if living and random.random() < self.model.UoM_reproduce:
+            # Create a new UoM:
             if self.model.grass:
                 self.energy /= 2
-            lamb = Sheep(self.pos, self.model, self.moore, self.energy)
+            lamb = UoM(self.pos, self.model, self.moore, self.energy)
             self.model.grid.place_agent(lamb, self.pos)
             self.model.schedule.add(lamb)
 
 
 class MSU(RandomWalker):
     '''
-    A wolf that walks around, reproduces (asexually) and eats sheep.
+    A MSU that walks around, reproduces (asexually) and eats UoM.
     '''
 
     energy = None
@@ -67,34 +67,34 @@ class MSU(RandomWalker):
         self.random_move()
         self.energy -= 1
 
-        # If there are sheep present, eat one
+        # If there are UoM present, eat one
         x, y = self.pos
         this_cell = self.model.grid.get_cell_list_contents([self.pos])
-        sheep = [obj for obj in this_cell if isinstance(obj, Sheep)]
-        if len(sheep) > 0:
-            sheep_to_eat = random.choice(sheep)
-            self.energy += self.model.wolf_gain_from_food
+        UoM = [obj for obj in this_cell if isinstance(obj, UoM)]
+        if len(UoM) > 0:
+            UoM_to_eat = random.choice(UoM)
+            self.energy += self.model.MSU_gain_from_food
 
-            # Kill the sheep
-            self.model.grid._remove_agent(self.pos, sheep_to_eat)
-            self.model.schedule.remove(sheep_to_eat)
+            # Kill the UoM
+            self.model.grid._remove_agent(self.pos, UoM_to_eat)
+            self.model.schedule.remove(UoM_to_eat)
 
         # Death or reproduction
         if self.energy < 0:
             self.model.grid._remove_agent(self.pos, self)
             self.model.schedule.remove(self)
         else:
-            if random.random() < self.model.wolf_reproduce:
-                # Create a new wolf cub
+            if random.random() < self.model.MSU_reproduce:
+                # Create a new MSU cub
                 self.energy /= 2
-                cub = Wolf(self.pos, self.model, self.moore, self.energy)
+                cub = MSU(self.pos, self.model, self.moore, self.energy)
                 self.model.grid.place_agent(cub, cub.pos)
                 self.model.schedule.add(cub)
 
 
 class GrassPatch(Agent):
     '''
-    A patch of grass that grows at a fixed rate and it is eaten by sheep
+    A patch of grass that grows at a fixed rate and it is eaten by UoM
     '''
 
     def __init__(self, pos, model, fully_grown, countdown):
