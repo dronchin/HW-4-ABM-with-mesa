@@ -39,7 +39,7 @@ class MSUvUoMPredation(Model):
     grass_regrowth_time = 30
     UoM_gain_from_food = 4
 
-    verbose = False  # Print-monitoring
+    verbose = True  # Print-monitoring
 
     description = 'A model for simulating MSU and UoM (predator-prey) ecosystem modelling.'
 

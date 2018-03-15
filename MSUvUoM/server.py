@@ -24,13 +24,14 @@ def MSU_UoM_portrayal(agent):
         portrayal["scale"] = 0.9
         portrayal["Layer"] = 2
         portrayal["text"] = round(agent.energy, 1)
-        portrayal["text_color"] = "White"
+        portrayal["text_color"] = "white"
 
     elif type(agent) is GrassPatch:
         if agent.fully_grown:
-            portrayal["Color"] = ["#00FF00", "#00CC00", "#009900"]
+            portrayal["Color"] = 'green'
+
         else:
-            portrayal["Color"] = ["#84e184", "#adebad", "#d6f5d6"]
+            portrayal["Color"] = 'chocolate'
         portrayal["Shape"] = "rect"
         portrayal["Filled"] = "true"
         portrayal["Layer"] = 0
@@ -41,7 +42,7 @@ def MSU_UoM_portrayal(agent):
 
 
 canvas_element = CanvasGrid(MSU_UoM_portrayal, 20, 20, 500, 500)
-chart_element = ChartModule([{"Label": "Wolves", "Color": "#AA0000"},
+chart_element = ChartModule([{"Label": "MSU", "Color": "#AA0000"},
                              {"Label": "UoM", "Color": "#666666"}])
 
 model_params = {"grass": UserSettableParameter('checkbox', 'Grass Enabled', True),
