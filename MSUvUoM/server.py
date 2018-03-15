@@ -49,7 +49,7 @@ model_params = {"grass": UserSettableParameter('checkbox', 'Grass Enabled', True
                 "initial_UoM": UserSettableParameter('slider', 'Initial UoM Population', 100, 10, 300),
                 "UoM_reproduce": UserSettableParameter('slider', 'UoM Reproduction Rate', 0.04, 0.01, 1.0,
                                                          0.01),
-                "initial_wolves": UserSettableParameter('slider', 'Initial MSU Population', 50, 10, 300),
+                "initial_MSU": UserSettableParameter('slider', 'Initial MSU Population', 50, 10, 300),
                 "MSU_reproduce": UserSettableParameter('slider', 'MSU Reproduction Rate', 0.05, 0.01, 1.0,
                                                         0.01,
                                                         description="The rate at which MSU agents reproduce."),

@@ -86,18 +86,18 @@ class MSUvUoMPredation(Model):
             x = random.randrange(self.width)
             y = random.randrange(self.height)
             energy = random.randrange(2 * self.UoM_gain_from_food)
-            UoM = UoM((x, y), self, True, energy)
-            self.grid.place_agent(UoM, (x, y))
-            self.schedule.add(UoM)
+            student = UoM((x, y), self, True, energy)
+            self.grid.place_agent(student, (x, y))
+            self.schedule.add(student)
 
         # Create MSU
         for i in range(self.initial_MSU):
             x = random.randrange(self.width)
             y = random.randrange(self.height)
             energy = random.randrange(2 * self.MSU_gain_from_food)
-            MSU = MSU((x, y), self, True, energy)
-            self.grid.place_agent(MSU, (x, y))
-            self.schedule.add(MSU)
+            student = MSU((x, y), self, True, energy)
+            self.grid.place_agent(student, (x, y))
+            self.schedule.add(student)
 
         # Create grass patches
         if self.grass:

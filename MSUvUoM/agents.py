@@ -1,4 +1,4 @@
-UoMimport random
+import random
 
 from mesa import Agent
 
@@ -47,9 +47,9 @@ class UoM(RandomWalker):
             # Create a new UoM:
             if self.model.grass:
                 self.energy /= 2
-            lamb = UoM(self.pos, self.model, self.moore, self.energy)
-            self.model.grid.place_agent(lamb, self.pos)
-            self.model.schedule.add(lamb)
+            student = UoM(self.pos, self.model, self.moore, self.energy)
+            self.model.grid.place_agent(student, self.pos)
+            self.model.schedule.add(student)
 
 
 class MSU(RandomWalker):
@@ -70,12 +70,12 @@ class MSU(RandomWalker):
         # If there are UoM present, eat one
         x, y = self.pos
         this_cell = self.model.grid.get_cell_list_contents([self.pos])
-        UoM = [obj for obj in this_cell if isinstance(obj, UoM)]
-        if len(UoM) > 0:
-            UoM_to_eat = random.choice(UoM)
+        UoM_student = [obj for obj in this_cell if isinstance(obj, UoM)]
+        if len(UoM_student) > 0:
+            UoM_to_eat = random.choice(UoM_student)
             self.energy += self.model.MSU_gain_from_food
 
-            # Kill the UoM
+            # Kill the UoMUoM_student
             self.model.grid._remove_agent(self.pos, UoM_to_eat)
             self.model.schedule.remove(UoM_to_eat)
 
